@@ -26,6 +26,26 @@ public class Usuario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role perfil;
 
+    public Usuario(String login, String senha, Role perfil) {
+    this.login = login;
+    this.senha = senha;
+    this.perfil = perfil;
+}   
+
+public void atualizarInformacoes(DadosAtualizacaoUsuario dados) {
+    if (dados.login() != null) {
+        this.login = dados.login();
+    }
+
+    if (dados.perfil() != null) {
+        this.perfil = dados.perfil();
+    }
+}
+
+public void alterarSenha(String novaSenhaCriptografada) {
+    this.senha = novaSenhaCriptografada;
+}
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + perfil.name()));
