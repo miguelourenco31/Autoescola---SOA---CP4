@@ -13,10 +13,10 @@ public class ValidadorConflitoHorarioInstrutor implements ValidadorAgendamento {
 
     @Override
     public void validar(DadosAgendamento dados) {
-        boolean instrutorOcupado = repository.existsByInstrutorIdAndDataHora(
-                dados.idInstrutor(),
-                dados.dataHora()
-        );
+boolean instrutorOcupado = repository.existsByInstrutorIdAndDataHoraAndCanceladaFalse(
+        dados.idInstrutor(),
+        dados.dataHora()
+);
 
         if (instrutorOcupado) {
             throw new ValidacaoException("Instrutor indisponível na data/hora escolhida!");

@@ -31,4 +31,22 @@ public class Instrucao {
 
     @Column(name = "data_hora")
     LocalDateTime dataHora;
+    
+    private boolean cancelada;
+
+@Column(name = "motivo_cancelamento")
+private String motivoCancelamento;
+
+public void cancelar(MotivoCancelamento motivo) {
+
+    if (LocalDateTime.now().plusHours(24).isAfter(this.dataHora)) {
+        throw new ValidacaoException(
+                "A instrução só pode ser cancelada com no mínimo 24 horas de antecedência!"
+        );
+    }
+
+    this.cancelada = true;
+    this.motivoCancelamento = motivo.name();
+}
+
 }

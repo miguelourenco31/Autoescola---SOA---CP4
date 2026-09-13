@@ -39,19 +39,39 @@ public class AgendaDeInstrucoes {
         validadoresAgendamento.forEach(validador -> validador.validar(dados));
 
         Aluno aluno = alunoRepository.getReferenceById(dados.idAluno());
+
         Instrutor instrutor = escolherInstrutor(dados);
         if (instrutor == null) {
             throw new ValidacaoException("Não existe instrutor disponível para a data/hora informada!");
         }
-        Instrucao instrucao = new Instrucao(
-                null,
-                aluno,
-                instrutor,
-                dados.dataHora()
-        );
+Instrucao instrucao = new Instrucao(
+        null,
+        aluno,
+        instrutor,
+        dados.dataHora(),
+        false,
+        null
+);
         Instrucao salva = repository.save(instrucao);
         return new DadosDetalhamentoAgendamento(salva);
     }
+
+    public void cancelar(DadosCancelamentoInstrucao dados) {
+
+    if (!repository.existsById(dados.idInstrucao())) {
+        throw new ValidacaoException("ID da instrução informado não existe!");
+    }
+
+    Instrucao instrucao = repository.getReferenceById(dados.idInstrucao());
+
+    if (instrucao.isCancelada()) {
+        throw new ValidacaoException("Esta instrução já foi cancelada!");
+    }
+
+    instrucao.cancelar(dados.motivo());
+
+    repository.save(instrucao);
+}
 
     private Instrutor escolherInstrutor(DadosAgendamento dados) {
         if (dados.idInstrutor() != null) {

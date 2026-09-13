@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.fiap3esr.autoescola3esr.domain.agenda.DadosCancelamentoInstrucao;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/instrucoes")
@@ -29,4 +31,14 @@ public class InstrucaoController {
     public ResponseEntity agendarInstrucao(@RequestBody @Valid DadosAgendamento dados) {
         return ResponseEntity.ok(agenda.agendar(dados));
     }
+
+    @PutMapping("/cancelamento")
+public ResponseEntity<Void> cancelarInstrucao(
+        @RequestBody @Valid DadosCancelamentoInstrucao dados) {
+
+    agenda.cancelar(dados);
+
+    return ResponseEntity.noContent().build();
+}
+
 }
